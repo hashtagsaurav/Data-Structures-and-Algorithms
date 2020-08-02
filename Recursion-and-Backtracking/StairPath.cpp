@@ -19,42 +19,48 @@ using namespace std;
 #define rloop(i,a,b)      for(ll i=a;i>b;i--)
 #define F                 first
 #define S                 second 
-
-vector<string> keys = {".","abc","def","ghi","jkl","mno","pqrs","tu","vwx","yz"};
-
-vector<string> kpc(string s)
+vector<string> stair(int n)
 {
-    if(s.length()==0)
+    if(n==0)
     {
         vector<string> base = {""};
         return base;
     }
-    char c = s[0];
-    string str = s.substr(1);
-    vector<string> rest = kpc(str);
-    vector<string> res;
-    string val = keys[c-'0'];
-    for (int i = 0; i < val.size(); i++)
+    if(n<0)
     {
-        for (auto v : rest)
-        {
-            res.push_back(val[i]+v);
-        }
-        
+        vector<string> base = {};
+        return base;
     }
-    return res;
+    vector<string> path1 = stair(n-1);
+    vector<string> path2 = stair(n-2);
+    vector<string> path3 = stair(n-3);
+    vector<string> path;
+    for (auto i : path1)
+    {
+        path.push_back('1'+i);
+    }
+    for (auto i : path2)
+    {
+        path.push_back('2'+i);
+    }
+    for (auto i : path3)
+    {
+        path.push_back('3'+i);
+    }
+    return path;
 }
+
 void solve()
 {
-    string s;
-    cin>>s;
-    vector<string> ans;
-    ans = kpc(s);
-    for (auto i : ans)
+    int n;
+    cin>>n;
+    int totalpaths=0;
+    for (auto i : stair(n))
     {
         cout<<i<<" ";
+        totalpaths++;
     }
-    cout<<"\n";
+    cout<<"\n"<<totalpaths<<"\n";
 }
 
 int main()

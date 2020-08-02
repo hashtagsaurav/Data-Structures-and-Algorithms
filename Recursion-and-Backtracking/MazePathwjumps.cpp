@@ -20,40 +20,55 @@ using namespace std;
 #define F                 first
 #define S                 second 
 
-vector<string> keys = {".","abc","def","ghi","jkl","mno","pqrs","tu","vwx","yz"};
-
-vector<string> kpc(string s)
+vector<string> maze(int srow,int scol,int drow,int dcol)
 {
-    if(s.length()==0)
+    if(srow==drow and scol==dcol)
     {
         vector<string> base = {""};
         return base;
     }
-    char c = s[0];
-    string str = s.substr(1);
-    vector<string> rest = kpc(str);
-    vector<string> res;
-    string val = keys[c-'0'];
-    for (int i = 0; i < val.size(); i++)
+    vector<string> path;
+    for (int i = 1; i <= dcol-scol; i++)
     {
-        for (auto v : rest)
+        vector<string> h = maze(srow,scol+i,drow,dcol);
+        for (auto val : h)
         {
-            res.push_back(val[i]+v);
+            path.push_back("h"+to_string(i)+val);
         }
         
     }
-    return res;
+    for (int i = 1; i <= drow-srow; i++)
+    {
+        vector<string> v = maze(srow+i,scol,drow,dcol);
+        for (auto val : v)
+        {
+            path.push_back("v"+to_string(i)+val);
+        }
+        
+    }
+    for (int i = 1; i <= drow-srow and i<=dcol-scol; i++)
+    {
+        vector<string> d = maze(srow+i,scol+i,drow,dcol);
+        for (auto val : d)
+        {
+            path.push_back("d"+to_string(i)+val);
+        }
+        
+    }
+    return path;
 }
+
 void solve()
 {
-    string s;
-    cin>>s;
-    vector<string> ans;
-    ans = kpc(s);
+    int r,c;
+    cin>>r>>c;
+    vector<string> ans = maze(1,1,r,c);
     for (auto i : ans)
     {
         cout<<i<<" ";
     }
+    cout<<"\n";
+    cout<<ans.size();
     cout<<"\n";
 }
 

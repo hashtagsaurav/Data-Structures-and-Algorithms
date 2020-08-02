@@ -20,40 +20,46 @@ using namespace std;
 #define F                 first
 #define S                 second 
 
-vector<string> keys = {".","abc","def","ghi","jkl","mno","pqrs","tu","vwx","yz"};
-
-vector<string> kpc(string s)
+vector<string> maze(int row,int col)
 {
-    if(s.length()==0)
+    vector<string> h;
+    vector<string> v;
+    if(row==0 and col==0)
     {
         vector<string> base = {""};
         return base;
     }
-    char c = s[0];
-    string str = s.substr(1);
-    vector<string> rest = kpc(str);
-    vector<string> res;
-    string val = keys[c-'0'];
-    for (int i = 0; i < val.size(); i++)
+    if(col>0)
     {
-        for (auto v : rest)
-        {
-            res.push_back(val[i]+v);
-        }
-        
+        h = maze(row,col-1);
     }
-    return res;
+    if(row>0)
+    {
+        v = maze(row-1,col);
+    }
+    vector<string> path;
+    for (auto i : h)
+    {
+        path.push_back("h"+i);
+    }
+    for (auto i : v)
+    {
+        path.push_back("v"+i);
+    }
+    return path;
 }
+
 void solve()
 {
-    string s;
-    cin>>s;
-    vector<string> ans;
-    ans = kpc(s);
+    int r,c;
+    cin>>r>>c;
+    vector<string> ans = maze(r-1,c-1);
     for (auto i : ans)
     {
         cout<<i<<" ";
     }
+    cout<<"\n";
+    cout<<ans.size();
     cout<<"\n";
 }
 
